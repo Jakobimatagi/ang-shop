@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { IShopItem } from '../../interfaces/store.interface';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ViewChild } from '@angular/core';
 import { CartService } from '../../services/cart.service';
@@ -35,12 +34,21 @@ export class ItemListComponent implements OnInit {
   constructor(private shopService: ShopService, private cart: CartService) {}
 
   public ngOnInit() {
-    this.shopService.getShopItems().subscribe(data => {
-      this.items = data;
-      this.updatePagedItems();
-      this.isLoading = false;
+    this.isLoading = true;
+    this.shopService.getShopItems().subscribe({
+      next: (data) => {
+        this.items = data;
+        this.updatePagedItems();
+      },
+      error: (err) => {
+        console.error('Error loading items', err);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
+  
 
   public updatePagedItems() {
     const start = this.pageIndex * this.pageSize;
