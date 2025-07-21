@@ -10,6 +10,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { ViewChild } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { map } from 'rxjs';
+import { error } from 'console';
 @Component({
   selector: 'store-top-items',
   standalone: true,
@@ -25,16 +26,28 @@ export class TopItemsComponent implements OnInit {
   constructor(private shopService: ShopService, private cart: CartService) {}
 
   public ngOnInit() {
-    this.shopService.getShopItems().pipe(
-      //return the top 10 rated items
-      map(items => [...items].sort((a,b) => b.rating?.rate - a.rating?.rate).slice(0,10))
-    ).subscribe(data => {
-      this.topItems = data;
-      this.isLoading = false;
-    });
+    this.isLoading = true;
+    this.getTopItems();
   }
 
   public addToCart(item: IShopItem) {
     this.cart.addItem(item);
+  }
+
+  private getTopItems() {
+    this.shopService.getShopItems().pipe(
+      map(items => [...items].sort((a,b) => b.rating?.rate - a.rating?.rate).slice(0,10))
+    ).subscribe({
+      next: (data) => {
+      this.topItems = data;
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error loading items', err);
+    },
+    complete: () => {
+      this.isLoading = false;
+    }
+    });
   }
 }

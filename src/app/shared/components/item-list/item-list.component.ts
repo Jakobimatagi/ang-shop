@@ -35,18 +35,7 @@ export class ItemListComponent implements OnInit {
 
   public ngOnInit() {
     this.isLoading = true;
-    this.shopService.getShopItems().subscribe({
-      next: (data) => {
-        this.items = data;
-        this.updatePagedItems();
-      },
-      error: (err) => {
-        console.error('Error loading items', err);
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
+    this.getShopItems();
   }
   
 
@@ -63,5 +52,20 @@ export class ItemListComponent implements OnInit {
 
   public addToCart(item: IShopItem) {
     this.cart.addItem(item);
+  }
+
+  private getShopItems() {
+    this.shopService.getShopItems().subscribe({
+      next: (data) => {
+        this.items = data;
+        this.updatePagedItems();
+      },
+      error: (err) => {
+        console.error('Error loading items', err);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 }
