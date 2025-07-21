@@ -1,9 +1,9 @@
-<div>
-  @if (!items){
+<div class="list-container">
+  @if (!items && isLoading){
     <p>Loading items...</p>
-  } @else if (items.length === 0) {
+  } @else if (items.length === 0 && !isLoading) {
     <p>No items available.</p>
-  } @else {
+  } @else if(items && !isLoading) {
   <mat-grid-list cols="3" rowHeight="1:1" gutterSize="8">
       @for (item of pagedItems; track item.id) {
         <mat-grid-tile>

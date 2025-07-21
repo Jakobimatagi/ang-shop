@@ -1,0 +1,22 @@
+<div class="top-items">
+  @if (!topItems){
+    <p>Loading top items...</p>
+  } @else if (topItems.length === 0) {
+    <p>No top items available.</p>
+  } @else {
+    <h1 class="sticky-header">Top Rated Items</h1>
+    <div class="top-items-scroll">
+      @for(item of topItems; track item) {
+        <div class="top-item">
+          <h3>{{ item.title }}</h3>
+          <p>Price: {{ item.price | currency }}</p>
+          <p class="rating"><mat-icon>star</mat-icon>{{ item.rating.rate }}</p>
+          <button mat-button color="primary" (click)="addToCart(item)">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Add to Cart
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

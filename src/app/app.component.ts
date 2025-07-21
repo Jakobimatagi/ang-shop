@@ -24,7 +24,6 @@ export class AppComponent {
   public cartCount: number = 0;
   constructor(private cart: CartService) {
     effect(() => {
-      console.log('Cart count changed:', this.cart.totalCount());
       this.cartCount = this.cart.totalCount();
     });
   }

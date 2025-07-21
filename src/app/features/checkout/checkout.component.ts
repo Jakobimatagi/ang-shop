@@ -19,7 +19,6 @@ export class CheckoutComponent {
   public addedItems: Array<IShopItem> = [];
   constructor(public cart: CartService) {
     effect(() => {
-      console.log('Cart changed:', this.cart.items());
       this.addedItems = this.cart.items()
     });
   }
